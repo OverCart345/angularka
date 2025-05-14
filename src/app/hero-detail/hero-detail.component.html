@@ -1,10 +1,47 @@
-<div *ngIf="hero">
-  <h2>{{hero.name | uppercase}} Details</h2>
-  <div><span>id: </span>{{hero.id}}</div>
-  <div>
-    <label for="hero-name">Hero name: </label>
-    <input id="hero-name" [(ngModel)]="hero.name" placeholder="Hero name"/>
-  </div>
-  <button type="button" (click)="goBack()">go back</button>
-  <button type="button" (click)="save()">save</button>
+<div *ngIf="heroForm">
+  <form [formGroup]="heroForm" (ngSubmit)="save()">
+    <h2>{{ heroForm.get('name')?.value | uppercase }} Details</h2>
+
+    <div><span>ID: </span>{{ heroForm.get('id')?.value }}</div>
+
+    <div>
+      <label for="hero-name">Hero name: </label>
+      <input id="hero-name" formControlName="name" placeholder="Hero name">
+      <div *ngIf="heroForm.get('name')?.invalid && (heroForm.get('name')?.dirty || heroForm.get('name')?.touched)"
+        class="alert alert-danger">
+        <div *ngIf="heroForm.get('name')?.errors?.['required']">
+          Name is required.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label for="hero-strength">Strength: </label>
+      <input id="hero-strength" type="number" formControlName="strength">
+      <!-- Similar error messages can be added for other fields -->
+    </div>
+
+    <div>
+      <label for="hero-dexterity">Dexterity: </label>
+      <input id="hero-dexterity" type="number" formControlName="dexterity">
+    </div>
+
+    <div>
+      <label for="hero-intelligence">Intelligence: </label>
+      <input id="hero-intelligence" type="number" formControlName="intelligence">
+    </div>
+
+    <div>
+      <label for="hero-hp">HP: </label>
+      <input id="hero-hp" type="number" formControlName="hp">
+    </div>
+
+    <div>
+      <label for="hero-mana">Mana: </label>
+      <input id="hero-mana" type="number" formControlName="mana">
+    </div>
+
+    <button type="submit" [disabled]="!heroForm.valid">save</button>
+    <button type="button" (click)="goBack()">go back</button>
+  </form>
 </div>
